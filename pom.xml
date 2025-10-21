@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Encabezado XML estándar. -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <!-- Nodo raíz del POM. Namespaces + schema para validar la estructura. -->
+
+    <modelVersion>4.0.0</modelVersion>
+    <!-- Versión del modelo POM (siempre 4.0.0 en Maven moderno). -->
+
+    <groupId>com.zillowmini</groupId>
+    <artifactId>zillowmini-parent</artifactId>
+    <version>1.0.0</version>
+    <!-- Coordenadas Maven del proyecto PADRE (el que heredarán los hijos). -->
+
+    <packaging>pom</packaging>
+    <!-- Tipo de empaquetado: POM. No produce JAR; sirve para centralizar versiones/plugins. -->
+
+    <parent>
+        <!-- Heredamos del parent oficial de Spring Boot: trae versiones coherentes y defaults. -->
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.3.4</version>
+        <relativePath/>
+        <!-- relativePath vacío -> Maven no busca un parent local; usa el remoto del repositorio. -->
+    </parent>
+
+    <properties>
+        <!-- Variables globales reutilizables por hijos y este mismo POM. -->
+        <java.version>21</java.version>
+        <!-- Todos compilan con Java 21 por defecto. -->
+
+        <spring-cloud.version>2024.0.2</spring-cloud.version>
+        <!-- Release Train de Spring Cloud compatible con Boot 3.3.x. -->
+
+        <!-- Versiones de libs transversales; los hijos las usarán si las declaran. -->
+        <springdoc.version>2.6.0</springdoc.version>
+        <flyway.version>10.19.0</flyway.version>
+        <testcontainers.version>1.20.2</testcontainers.version>
+        <opensearch-java.version>2.12.0</opensearch-java.version>
+        <otel.version>1.40.0</otel.version>
+    </properties>
+
+    <dependencyManagement>
+        <!-- No agrega dependencias automáticamente. Solo fija versiones vía BOM. -->
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+                <!-- Importa el BOM de Spring Cloud: gateway, eureka, config, etc. quedan versionados. -->
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <pluginManagement>
+            <!-- Define plugins y su config por defecto para los HIJOS (aquí no se ejecutan). -->
+            <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <!-- Disponible en hijos: empaquetado ejecutable y spring-boot:run. -->
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <configuration>
+                        <release>${java.version}</release>
+                        <!-- Compila a Java 21 (bytecode y APIs); evita inconsistencias de source/target. -->
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+</project>
