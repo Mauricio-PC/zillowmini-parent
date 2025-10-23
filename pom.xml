@@ -36,7 +36,8 @@
 
         <!-- Versiones de libs transversales; los hijos las usarán si las declaran. -->
         <springdoc.version>2.6.0</springdoc.version>
-        <flyway.version>10.19.0</flyway.version>
+    <!-- 🔼 Flyway con soporte para PostgreSQL 17.x -->
+        <flyway.version>10.21.0</flyway.version>
         <testcontainers.version>1.20.2</testcontainers.version>
         <opensearch-java.version>2.12.0</opensearch-java.version>
         <otel.version>1.40.0</otel.version>
@@ -53,6 +54,17 @@
                 <scope>import</scope>
                 <!-- Importa el BOM de Spring Cloud: gateway, eureka, config, etc. quedan versionados. -->
             </dependency>
+                         <!-- ✅ Gestiona Flyway para todos los hijos -->
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+            <version>${flyway.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-database-postgresql</artifactId>
+            <version>${flyway.version}</version>
+        </dependenc
         </dependencies>
     </dependencyManagement>
 
